@@ -1,0 +1,871 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#fff0f6">
+<title>A Little Birthday Surprise 💗</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --pink: #ff83b5;
+  --pink-dark: #df4f8c;
+  --pink-light: #fff0f6;
+  --purple: #c7a0f5;
+  --text: #75445f;
+  --muted: #a77b93;
+  --white: #fffafd;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+  font-family: "DM Sans", sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(ellipse at 8% 8%, rgba(255, 176, 211, .65), transparent 40%),
+    radial-gradient(ellipse at 92% 22%, rgba(222, 190, 255, .6), transparent 38%),
+    radial-gradient(ellipse at 50% 100%, rgba(255, 204, 226, .8), transparent 45%),
+    linear-gradient(135deg, #fff7fb, #ffe7f1 55%, #f9edff);
+  background-attachment: fixed;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible {
+  outline: 3px solid #d77baa;
+  outline-offset: 4px;
+}
+
+#background-hearts {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.floating-heart {
+  position: absolute;
+  bottom: -50px;
+  opacity: 0;
+  animation: floatUp linear forwards;
+  user-select: none;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(.7);
+    opacity: 0;
+  }
+  15% {
+    opacity: .55;
+  }
+  85% {
+    opacity: .4;
+  }
+  100% {
+    transform: translateY(-115vh) rotate(35deg) scale(1.15);
+    opacity: 0;
+  }
+}
+
+.sparkle {
+  position: fixed;
+  pointer-events: none;
+  color: #fff;
+  text-shadow: 0 0 8px #f28ab8, 0 0 16px #e6a8ff;
+  animation: sparkle 2.5s ease-in-out infinite alternate;
+  z-index: 0;
+}
+
+@keyframes sparkle {
+  from { opacity: .25; transform: scale(.7); }
+  to { opacity: .95; transform: scale(1.2); }
+}
+
+.app {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  padding: 22px 16px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.top-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #bd7197;
+  margin: 6px 0 15px;
+  text-align: center;
+}
+
+.progress {
+  display: flex;
+  gap: 7px;
+  margin: 0 auto 22px;
+  width: min(100%, 350px);
+}
+
+.progress span {
+  height: 4px;
+  border-radius: 20px;
+  background: rgba(209, 139, 174, .24);
+  flex: 1;
+  transition: background .35s ease, transform .35s ease;
+}
+
+.progress span.active {
+  background: linear-gradient(90deg, #ff83b5, #c7a0f5);
+  transform: scaleY(1.4);
+}
+
+.screen {
+  width: min(100%, 510px);
+  display: none;
+  animation: enter .6s cubic-bezier(.2,.8,.2,1);
+}
+
+.screen.active {
+  display: block;
+}
+
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.card {
+  position: relative;
+  overflow: hidden;
+  padding: 35px 28px;
+  text-align: center;
+  border-radius: 30px;
+  border: 1px solid rgba(255,255,255,.95);
+  background: rgba(255, 251, 253, .87);
+  box-shadow:
+    0 20px 60px rgba(209, 105, 153, .13),
+    0 3px 15px rgba(255, 255, 255, .8),
+    inset 0 1px 0 white;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 10%;
+  width: 80%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #ff9fc7, #d3a5ff, #ff9fc7, transparent);
+}
+
+.card::after {
+  content: "✧";
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  color: #ef9fc2;
+  font-size: 24px;
+  opacity: .75;
+}
+
+.eyebrow {
+  color: #d36b9c;
+  text-transform: uppercase;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2.6px;
+  margin-bottom: 17px;
+}
+
+h1, h2 {
+  font-family: "Playfair Display", serif;
+  font-weight: 600;
+  line-height: 1.22;
+}
+
+h1 {
+  font-size: clamp(35px, 8vw, 51px);
+  margin-bottom: 15px;
+  background: linear-gradient(120deg, #ed6b9f, #c27bd3, #e96caa);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+h2 {
+  font-size: clamp(27px, 6vw, 35px);
+  color: #d65c94;
+  margin-bottom: 17px;
+}
+
+p {
+  font-size: 14px;
+  line-height: 1.9;
+  color: var(--muted);
+}
+
+.hero-emoji {
+  font-size: 62px;
+  line-height: 1.4;
+  display: inline-block;
+  animation: gentleBounce 3s ease-in-out infinite;
+  filter: drop-shadow(0 8px 12px rgba(232, 117, 168, .18));
+  margin-bottom: 12px;
+}
+
+@keyframes gentleBounce {
+  0%, 100% { transform: translateY(0) rotate(-4deg); }
+  50% { transform: translateY(-9px) rotate(4deg); }
+}
+
+.subtitle {
+  margin: 0 auto 24px;
+  max-width: 350px;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  background: linear-gradient(120deg, #fff0f7, #f7edff);
+  border: 1px solid #f6d1e4;
+  border-radius: 50px;
+  color: #c65b91;
+  padding: 9px 15px;
+  font-size: 11px;
+  font-weight: 600;
+  margin: 5px 0 23px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 25px;
+}
+
+.btn {
+  min-height: 45px;
+  padding: 12px 20px;
+  border-radius: 50px;
+  border: 1px solid #f3c7dc;
+  font-size: 12px;
+  font-weight: 700;
+  transition: transform .2s, box-shadow .2s;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn-primary {
+  background: linear-gradient(120deg, #ff9fc5, #f279ae);
+  color: white;
+  border-color: rgba(255,255,255,.7);
+  box-shadow: 0 7px 20px rgba(235, 107, 158, .23);
+}
+
+.btn-secondary {
+  color: #cc6498;
+  background: #fff5fa;
+}
+
+.message-box {
+  margin-top: 20px;
+  padding: 21px 19px;
+  border-radius: 20px;
+  background: linear-gradient(145deg, #fff5fa, #fdf4ff);
+  border: 1px solid #f8deeb;
+  text-align: left;
+}
+
+.message-box p + p {
+  margin-top: 13px;
+}
+
+.signature {
+  font-family: "Dancing Script", cursive;
+  font-size: 27px;
+  color: #d65d98;
+  margin-top: 18px;
+}
+
+.memory-date {
+  margin: 20px 0;
+  padding: 20px 14px;
+  border-radius: 22px;
+  background: linear-gradient(140deg, #fff0f7, #f4eaff);
+  border: 1px solid #f6d6e9;
+}
+
+.memory-date .day {
+  font-family: "Playfair Display", serif;
+  font-size: 38px;
+  font-weight: 700;
+  color: #df6ba3;
+}
+
+.memory-date .month {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #ad78bd;
+  margin-top: 3px;
+}
+
+.memory-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  text-align: left;
+  margin-top: 18px;
+}
+
+.memory-dot {
+  flex: 0 0 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  background: #ffe3ef;
+  border-radius: 50%;
+  font-size: 16px;
+}
+
+.memory-line strong {
+  display: block;
+  color: #c75c91;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.memory-line p {
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.cake-area {
+  padding: 15px 0 4px;
+}
+
+.cake {
+  position: relative;
+  display: inline-block;
+  font-size: 90px;
+  line-height: 1.5;
+  cursor: pointer;
+  user-select: none;
+  filter: drop-shadow(0 10px 12px rgba(235, 121, 174, .2));
+  transition: transform .25s;
+}
+
+.cake:hover {
+  transform: scale(1.06);
+}
+
+.cake-note {
+  min-height: 45px;
+  margin-top: 12px;
+  color: #cc6899;
+  font-size: 13px;
+}
+
+.wish-result {
+  display: none;
+  margin-top: 18px;
+  border-radius: 18px;
+  padding: 17px;
+  background: #fff0f7;
+  border: 1px solid #f7cfe2;
+  animation: enter .5s ease;
+}
+
+.wish-result.show {
+  display: block;
+}
+
+.wish-result strong {
+  display: block;
+  color: #d65e96;
+  margin-bottom: 8px;
+}
+
+.music-box {
+  margin-top: 22px;
+  padding: 12px;
+  background: linear-gradient(145deg, #fff1f8, #f7edff);
+  border: 1px solid #f4d5e7;
+  border-radius: 22px;
+}
+
+.music-box iframe {
+  width: 100%;
+  height: 152px;
+  border: 0;
+  border-radius: 13px;
+}
+
+.music-caption {
+  font-size: 11px;
+  margin-top: 12px;
+}
+
+.final-heart {
+  font-size: 70px;
+  display: inline-block;
+  margin: 14px 0;
+  animation: heartBeat 1.5s ease-in-out infinite;
+}
+
+@keyframes heartBeat {
+  0%, 100% { transform: scale(1); }
+  15% { transform: scale(1.13); }
+  30% { transform: scale(1); }
+  45% { transform: scale(1.09); }
+}
+
+.footer {
+  color: #c38ca8;
+  font-size: 10px;
+  letter-spacing: 1px;
+  margin-top: 23px;
+  text-align: center;
+}
+
+#confetti-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.confetti {
+  position: absolute;
+  top: -15px;
+  width: 8px;
+  height: 12px;
+  border-radius: 3px;
+  animation: confettiFall linear forwards;
+}
+
+@keyframes confettiFall {
+  to {
+    transform: translateY(110vh) rotate(780deg);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .app {
+    padding: 17px 12px 25px;
+  }
+
+  .card {
+    padding: 31px 19px;
+    border-radius: 25px;
+  }
+
+  .hero-emoji {
+    font-size: 54px;
+  }
+
+  p {
+    font-size: 13px;
+  }
+
+  .message-box {
+    padding: 17px 15px;
+  }
+
+  .btn {
+    flex: 1 1 130px;
+  }
+
+  .memory-date .day {
+    font-size: 34px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
+</style>
+</head>
+
+<body>
+<div id="background-hearts" aria-hidden="true"></div>
+<div id="confetti-layer" aria-hidden="true"></div>
+
+<main class="app">
+  <div class="top-label">♡ a little surprise for you ♡</div>
+
+  <div class="progress" id="progress" aria-label="Birthday card progress">
+    <span class="active"></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <!-- SCREEN 1 -->
+  <section class="screen active" data-screen="0">
+    <div class="card">
+      <div class="eyebrow">A little birthday surprise</div>
+      <div class="hero-emoji">🎀</div>
+      <h1>Happy Birthday shona </h1>
+      <p class="subtitle">
+        Today is all about you, your beautiful smile, and all the little things
+        that make you so special. I made something just for you. 💗
+      </p>
+      <div class="pill">🌷 made with a little extra care</div>
+      <div class="buttons">
+        <button class="btn btn-primary" onclick="nextScreen()">
+          Open your surprise 💌
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREEN 2 -->
+  <section class="screen" data-screen="1">
+    <div class="card">
+      <div class="eyebrow">A birthday note for you</div>
+      <h2>A little message 💗</h2>
+      <p>
+        Some people make ordinary days feel a little more special just by being
+        themselves. You're one of those people.
+      </p>
+
+      <div class="message-box">
+        <p>
+          On your birthday, I hope you get a hundred reasons to smile, moments
+          that make you genuinely happy, and surprises that make your day feel
+          magical.
+        </p>
+        <p>
+          May this new year of your life bring you peaceful days, beautiful
+          memories, new adventures, and all the happiness you deserve.
+        </p>
+        <p>
+          Never stop being the person you are. Keep smiling, keep growing, and
+          keep making the world around you a little brighter. 🌸
+        </p>
+        <div class="signature">With warm wishes ♡</div>
+      </div>
+
+      <div class="buttons">
+        <button class="btn btn-secondary" onclick="prevScreen()">← Back</button>
+        <button class="btn btn-primary" onclick="nextScreen()">One little memory →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREEN 3 -->
+  <section class="screen" data-screen="2">
+    <div class="card">
+      <div class="eyebrow">A little throwback</div>
+      <h2>Remember this? 🌷</h2>
+      <p>
+        Every connection has a beginning. Here's a tiny reminder of one date
+        worth remembering.
+      </p>
+
+      <div class="memory-date">
+        <div style="font-size:29px">👻 💗</div>
+        <div class="day">06</div>
+        <div class="month">OCTOBER 2025</div>
+        <p style="margin-top:12px">The Snapchat connection began ✨</p>
+      </div>
+
+      <div class="memory-line">
+        <div class="memory-dot">💌</div>
+        <div>
+          <strong>A small beginning</strong>
+          <p>One little connection that became a memory worth keeping.</p>
+        </div>
+      </div>
+
+      <div class="memory-line">
+        <div class="memory-dot">🌸</div>
+        <div>
+          <strong>Still connected</strong>
+          <p>And here we are, with another birthday to celebrate.</p>
+        </div>
+      </div>
+
+      <p style="margin-top:20px">
+        Sometimes, even a simple date can bring back a smile. ♡
+      </p>
+
+      <div class="buttons">
+        <button class="btn btn-secondary" onclick="prevScreen()">← Back</button>
+        <button class="btn btn-primary" onclick="nextScreen()">Make a wish 🎂</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREEN 4 -->
+  <section class="screen" data-screen="3">
+    <div class="card">
+      <div class="eyebrow">Your special moment</div>
+      <h2>Make a birthday wish ✨</h2>
+      <p>Take a tiny pause, think of something wonderful, and tap the cake!</p>
+
+      <div class="cake-area">
+        <div class="cake" role="button" tabindex="0"
+             aria-label="Make a birthday wish"
+             onclick="makeWish()"
+             onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();makeWish();}">
+          🎂
+        </div>
+        <div class="cake-note" id="cake-note">Your wish is waiting... 💗</div>
+      </div>
+
+      <div class="wish-result" id="wish-result">
+        <strong>✨ Wish made! ✨</strong>
+        <p>
+          May the things you wish for find their way to you, may your worries
+          feel lighter, and may this year give you countless reasons to smile. 🌷
+        </p>
+      </div>
+
+      <div class="buttons">
+        <button class="btn btn-secondary" onclick="prevScreen()">← Back</button>
+        <button class="btn btn-primary" onclick="nextScreen()">A little music 🎵</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREEN 5 -->
+  <section class="screen" data-screen="4">
+    <div class="card">
+      <div class="eyebrow">A song for your day</div>
+      <h2>Press play & enjoy 🎧</h2>
+      <p>
+        Here's a little music for your birthday. Sit back, enjoy the moment,
+        and let the song add something special to your day. 💕
+      </p>
+
+      <div class="music-box">
+        <!-- Replace YOUR_SPOTIFY_SONG_ID with the ID from your Spotify track link -->
+        <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/79hQvdTHNBkq2fp2ZrM8b2?utm_source=generator&si=84d5ed8863224227" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      </div>
+
+      <p class="music-caption">
+        🎶 Tap play inside Spotify to listen.
+      </p>
+
+      <div class="buttons">
+        <button class="btn btn-secondary" onclick="prevScreen()">← Back</button>
+        <button class="btn btn-primary" onclick="nextScreen()">One last thing 💌</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREEN 6 -->
+  <section class="screen" data-screen="5">
+    <div class="card">
+      <div class="eyebrow">Before you go...</div>
+      <h2>One last birthday wish 🌸</h2>
+
+      <div class="final-heart">💗</div>
+
+      <p>
+        I hope you look back on today with a smile and step into this new
+        chapter with excitement. You deserve kindness, happiness, beautiful
+        opportunities, and people who appreciate you.
+      </p>
+
+      <div class="message-box" style="text-align:center">
+        <p>
+          May your days be filled with little joys, your dreams keep growing,
+          and your smile never run out of reasons.
+        </p>
+        <div class="signature">Happy Birthday, once again! 🎀</div>
+      </div>
+
+      <div class="buttons">
+        <button class="btn btn-secondary" onclick="prevScreen()">← Back</button>
+        <button class="btn btn-primary" onclick="celebrate()">Celebrate again! 🎉</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer">MADE WITH ♡ JUST FOR YOUR SPECIAL DAY</div>
+</main>
+
+<script>
+const screens = [...document.querySelectorAll(".screen")];
+const progressItems = [...document.querySelectorAll("#progress span")];
+let currentScreen = 0;
+
+function showScreen(index) {
+  currentScreen = Math.max(0, Math.min(index, screens.length - 1));
+
+  screens.forEach((screen, i) => {
+    screen.classList.toggle("active", i === currentScreen);
+  });
+
+  progressItems.forEach((item, i) => {
+    item.classList.toggle("active", i <= currentScreen);
+  });
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function nextScreen() {
+  if (currentScreen < screens.length - 1) {
+    showScreen(currentScreen + 1);
+  }
+}
+
+function prevScreen() {
+  if (currentScreen > 0) {
+    showScreen(currentScreen - 1);
+  }
+}
+
+/* FLOATING PINK HEARTS */
+const heartContainer = document.getElementById("background-hearts");
+const heartSymbols = ["♡", "♥", "💕", "✧", "🌸", "💗"];
+
+function createHeart() {
+  const heart = document.createElement("span");
+  heart.className = "floating-heart";
+  heart.textContent = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+
+  heart.style.left = Math.random() * 100 + "%";
+  heart.style.fontSize = (12 + Math.random() * 18) + "px";
+  heart.style.color = ["#f48fb8", "#edacd0", "#c8a4ef", "#ffbdd8"][
+    Math.floor(Math.random() * 4)
+  ];
+
+  const duration = 9 + Math.random() * 9;
+  heart.style.animationDuration = duration + "s";
+
+  heartContainer.appendChild(heart);
+
+  setTimeout(() => heart.remove(), duration * 1000);
+}
+
+for (let i = 0; i < 12; i++) {
+  setTimeout(createHeart, i * 500);
+}
+
+setInterval(createHeart, 1100);
+
+/* TWINKLING SPARKLES */
+for (let i = 0; i < 18; i++) {
+  const sparkle = document.createElement("span");
+  sparkle.className = "sparkle";
+  sparkle.textContent = Math.random() > 0.5 ? "✧" : "·";
+  sparkle.style.left = Math.random() * 100 + "%";
+  sparkle.style.top = Math.random() * 100 + "%";
+  sparkle.style.fontSize = (10 + Math.random() * 14) + "px";
+  sparkle.style.animationDelay = Math.random() * 3 + "s";
+  document.body.appendChild(sparkle);
+}
+
+/* BIRTHDAY WISH */
+let wishMade = false;
+
+function makeWish() {
+  const result = document.getElementById("wish-result");
+  const note = document.getElementById("cake-note");
+
+  if (!wishMade) {
+    wishMade = true;
+    result.classList.add("show");
+    note.textContent = "Your wish is on its way! 💖";
+    launchConfetti(90);
+  } else {
+    note.textContent = "Keep smiling and wishing big! 🌷";
+    launchConfetti(25);
+  }
+}
+
+/* CONFETTI */
+function launchConfetti(amount = 65) {
+  const layer = document.getElementById("confetti-layer");
+  const colors = ["#ff8fbd", "#ffd1e5", "#d5b5ff", "#fff0a8", "#ffffff"];
+
+  for (let i = 0; i < amount; i++) {
+    const piece = document.createElement("span");
+    piece.className = "confetti";
+    piece.style.left = Math.random() * 100 + "%";
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.animationDuration = (2 + Math.random() * 3) + "s";
+    piece.style.animationDelay = Math.random() * 0.7 + "s";
+    piece.style.transform = `rotate(${Math.random() * 360}deg)`;
+
+    layer.appendChild(piece);
+    setTimeout(() => piece.remove(), 6000);
+  }
+}
+
+function celebrate() {
+  launchConfetti(120);
+  showScreen(0);
+}
+
+/* MOBILE SWIPE NAVIGATION */
+let touchStartX = 0;
+let touchStartY = 0;
+
+document.addEventListener("touchstart", event => {
+  touchStartX = event.changedTouches[0].screenX;
+  touchStartY = event.changedTouches[0].screenY;
+}, { passive: true });
+
+document.addEventListener("touchend", event => {
+  const deltaX = event.changedTouches[0].screenX - touchStartX;
+  const deltaY = event.changedTouches[0].screenY - touchStartY;
+
+  if (Math.abs(deltaX) > 85 && Math.abs(deltaY) < 70) {
+    if (deltaX < 0) nextScreen();
+    else prevScreen();
+  }
+}, { passive: true });
+</script>
+</body>
+</html>
+```
